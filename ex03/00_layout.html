@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="tema" rel="stylesheet" href="00_layout.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Multiplos Layouts</h1>
+    <button onclick="layout_00()" >Layout 00</button>
+    <button onclick="layout_01()" >Layout 01</button>
+    <button onclick="toggle()" >Toggle</button>
+    <p  id="p01">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum veniam repudiandae culpa? Quas perferendis fuga dolor magni culpa vel exercitationem quis dolores voluptas necessitatibus, harum quibusdam ipsum provident distinctio! Debitis.
+    </p>
+
+    <p  id="p02">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum veniam repudiandae culpa? Quas perferendis fuga dolor magni culpa vel exercitationem quis dolores voluptas necessitatibus, harum quibusdam ipsum provident distinctio! Debitis.
+    </p>
+
+    <p  id="p03">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum veniam repudiandae culpa? Quas perferendis fuga dolor magni culpa vel exercitationem quis dolores voluptas necessitatibus, harum quibusdam ipsum provident distinctio! Debitis.
+    </p>
+
+    <p  id="p04">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum veniam repudiandae culpa? Quas perferendis fuga dolor magni culpa vel exercitationem quis dolores voluptas necessitatibus, harum quibusdam ipsum provident distinctio! Debitis.
+    </p>
+
+    <script>
+        function layout_00(){
+            let link = document.getElementById("tema");
+            link.href = "00_layout.css";
+        }
+
+        function layout_01(){
+            let link = document.getElementById("tema");
+            link.href = "01_layout.css";
+        }
+
+        function toggle(){
+            let link = document.getElementById("tema");
+                if (link.href.includes("00_layout.css")) {
+            link.href = "01_layout.css";
+                } else {
+            link.href = "00_layout.css";
+             }
+
+        }
+
+    </script>
+
+</body>
+</html>

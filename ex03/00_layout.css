@@ -1,0 +1,25 @@
+h1 {
+    background-color: azure;
+    color: red;
+}
+
+p#p01 {
+    background-color: rgb(151, 248, 106);
+    color: rgb(63, 14, 108);
+}
+
+p#p02 {
+    background-color: rgb(207, 106, 230);
+    color: rgb(255, 0, 0);
+}
+
+p#p03 {
+    background-color: rgb(66, 201, 235);
+    color: rgb(84, 173, 16);
+}
+
+p#p04 {
+    background-color: rgb(217, 160, 160);
+    color: rgb(167, 16, 112);
+}
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>questao_03</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    img {
+      width: 200px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: aquamarine;
+      margin: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <img id="pokemon" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" alt="Pokémon">
+
+  <div>
+    <button onclick="mudarPokemon(-1)">Voltar -1</button>
+    <button onclick="mudarPokemon(1)">Adiantar +1</button>
+  </div>
+
+  <script>
+    let id = 1;
+
+    function mudarPokemon(valor) {
+      id += valor;
+
+      if (id <= 0) {
+        id = 1;
+      }
+      if (id > 100) {
+        id = 100;
+      }
+
+      let url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`;
+      document.getElementById("pokemon").src = url;
+    }
+  </script>
+
+</body>
+</html>

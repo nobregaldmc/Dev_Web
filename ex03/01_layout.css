@@ -1,0 +1,24 @@
+h1 {
+    background-color: rgb(10, 39, 39);
+    color: rgb(207, 111, 111);
+}
+
+p#p01 {
+    background-color: blue;
+    color: blueviolet;
+}
+
+p#p02 {
+    background-color: rgb(166, 166, 187);
+    color: rgb(44, 169, 54);
+}
+
+p#p03 {
+    background-color: rgb(228, 142, 227);
+    color: rgb(0, 0, 0);
+}
+
+p#p04 {
+    background-color: rgb(214, 212, 83);
+    color: rgb(167, 16, 112);
+}
