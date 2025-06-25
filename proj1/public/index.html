@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link id="tema" rel="stylesheet" href="style.css">
+  <title>Lista de Alunos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    table {
+      width: 70%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+    #media-ira {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    
+  </style>
+</head>
+<body>
+  <h1>Lista de Alunos</h1>
+
+<a href="novo_aluno.html">
+    <button style="margin-bottom: 20px;"> + Novo Aluno</button>
+</a>
+
+  <table id="tabela-alunos">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Curso</th>
+        <th>IRA</th>
+        <th>Ações</th>
+      </tr>
+      </thead>
+<tbody>
+<!-- Linhas dos alunos serão geradas aqui -->
+</tbody>
+  </table>
+
+  <h2 id="media-ira">Média do IRA: </h2>
+
+  <script>
+    fetch('http://localhost:3000/alunos')
+      .then(response => response.json())
+      .then(data => {
+        const tabela = document.getElementById('tabela-alunos').getElementsByTagName('tbody')[0];
+        let somaIRA = 0;
+
+          data.forEach(aluno => {
+          let linha = tabela.insertRow();
+
+          let celulaNome = linha.insertCell(0);
+          let celulaCurso = linha.insertCell(1);
+          let celulaIRA = linha.insertCell(2);
+
+          let celulaEditar = linha.insertCell(3);
+celulaEditar.innerHTML = `<a href="editar_aluno.html?id=${aluno.id}"><button>Editar</button></a>`;
+
+          celulaNome.textContent = aluno.nome;
+          celulaCurso.textContent = aluno.curso;
+          celulaIRA.textContent = aluno.ira;
+
+            somaIRA += aluno.ira;
+          });
+
+          let mediaIRA = somaIRA / data.length;
+          document.getElementById('media-ira').textContent += mediaIRA.toFixed(2);
+          })
+          .catch(error => console.error('Erro ao buscar os alunos:', error));
+  </script>
+</body>
+</html>

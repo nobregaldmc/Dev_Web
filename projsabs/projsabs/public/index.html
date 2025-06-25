@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerenciar Alunos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    table {
+      width: 80%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #00796B;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    button {
+      margin: 0 4px;
+      padding: 4px 8px;
+    }
+
+    #media-ira {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #00796B;
+    }
+
+    form {
+      margin-top: 30px;
+    }
+
+    input {
+      margin: 4px;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Alunos</h1>
+  <table id="tabela-alunos">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Curso</th>
+        <th>IRA</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <p id="media-ira">Média do IRA: </p>
+
+  <h2>Adicionar / Editar Aluno</h2>
+  <form id="form-aluno">
+    <input type="hidden" id="aluno-id" />
+    <input type="text" id="nome" placeholder="Nome" required />
+    <input type="text" id="curso" placeholder="Curso" required />
+    <input type="number" step="0.1" id="ira" placeholder="IRA" required />
+    <button type="submit">Salvar</button>
+    <button type="button" onclick="cancelarEdicao()">Cancelar</button>
+  </form>
+
+  <script>
+    const API_URL = 'http://localhost:3000/alunos';
+
+    async function carregarAlunos() {
+      const resposta = await fetch(API_URL);
+      const alunos = await resposta.json();
+      const tabela = document.querySelector('#tabela-alunos tbody');
+      tabela.innerHTML = '';
+      let somaIRA = 0;
+
+      alunos.forEach(aluno => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${aluno.nome}</td>
+          <td>${aluno.curso}</td>
+          <td>${aluno.ira}</td>
+          <td>
+            <button onclick="editarAluno(${aluno.id})">Editar</button>
+            <button onclick="removerAluno(${aluno.id})">Excluir</button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+        somaIRA += aluno.ira;
+      });
+
+      const media = alunos.length ? (somaIRA / alunos.length).toFixed(2) : 0;
+      document.getElementById('media-ira').textContent = `Média do IRA: ${media}`;
+    }
+
+    async function editarAluno(id) {
+      const resposta = await fetch(`${API_URL}`);
+      const alunos = await resposta.json();
+      const aluno = alunos.find(a => a.id === id);
+      if (!aluno) return;
+
+      document.getElementById('aluno-id').value = aluno.id;
+      document.getElementById('nome').value = aluno.nome;
+      document.getElementById('curso').value = aluno.curso;
+      document.getElementById('ira').value = aluno.ira;
+    }
+
+    async function removerAluno(id) {
+      if (confirm('Tem certeza que deseja remover este aluno?')) {
+        await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        carregarAlunos();
+      }
+    }
+
+    function cancelarEdicao() {
+      document.getElementById('form-aluno').reset();
+      document.getElementById('aluno-id').value = '';
+    }
+
+    document.getElementById('form-aluno').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const id = document.getElementById('aluno-id').value;
+      const nome = document.getElementById('nome').value;
+      const curso = document.getElementById('curso').value;
+      const ira = parseFloat(document.getElementById('ira').value);
+
+      const aluno = { nome, curso, ira };
+
+      if (id) {
+        await fetch(`${API_URL}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aluno)
+        });
+      } else {
+        await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aluno)
+        });
+      }
+
+      cancelarEdicao();
+      carregarAlunos();
+    });
+
+    carregarAlunos();
+  </script>
+</body>
+</html>
