@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 app.use(cors());
-app.use(express.json()); // 👈 Permite interpretar JSON no corpo da requisição
+app.use(express.json()); // Permite interpretar JSON no corpo da requisição
 
 // Servir arquivos estáticos da pasta public
 app.use(express.static(path.join(__dirname, 'public')));

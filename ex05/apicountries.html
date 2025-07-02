@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>COVID-19 - Por País</title>
+  <link rel="stylesheet" href="apicountries.css">
+</head>
+<body>
+  <h1>COVID-19 no Mundo por País</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>País</th>
+        <th>Casos Confirmados</th>
+        <th>Mortes</th>
+        <th>Recuperados</th>
+      </tr>
+    </thead>
+    <tbody id="countriesTableBody">
+      <tr><td colspan="4">Carregando...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    fetch('https://covid19-brazil-api.now.sh/api/report/v1/countries')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById('countriesTableBody');
+        tbody.innerHTML = '';
+
+        data.data.forEach(pais => {
+          const destaque = pais.country.toLowerCase() === 'brazil' ? 'brasil' : '';
+          const row = `
+            <tr class="${destaque}">
+              <td>${pais.country}</td>
+              <td>${pais.cases}</td>
+              <td>${pais.deaths}</td>
+              <td>${pais.recovered}</td>
+            </tr>
+          `;
+          tbody.innerHTML += row;
+        });
+      })
+      .catch(error => {
+        document.getElementById('countriesTableBody').innerHTML = `
+          <tr><td colspan="4">Erro ao carregar dados: ${error}</td></tr>
+        `;
+      });
+  </script>
+</body>
+</html>

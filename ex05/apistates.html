@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>COVID-19 - Estados Brasileiros</title>
+  <link rel="stylesheet" href="apistates.css">
+</head>
+<body>
+  <h1>COVID-19 no Brasil por Estado</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome do Estado</th>
+        <th>Abreviação</th>
+        <th>Número de Casos</th>
+        <th>Número de Suspeitos</th>
+        <th>Número de Falecimentos</th>
+      </tr>
+    </thead>
+    <tbody id="covidTableBody">
+      <tr><td colspan="5">Carregando...</td></tr>
+    </tbody>
+    <tfoot id="mediaRow"></tfoot>
+  </table>
+
+  <div class="resultado" id="relacoes"></div>
+
+  <script>
+    fetch('https://covid19-brazil-api.now.sh/api/report/v1')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById('covidTableBody');
+        const tfoot = document.getElementById('mediaRow');
+        const relacoesDiv = document.getElementById('relacoes');
+
+        tbody.innerHTML = '';
+
+        let totalCasos = 0;
+        let totalSuspeitos = 0;
+        let totalMortes = 0;
+        let estados = data.data.length;
+
+        let maiorRelacao = -Infinity;
+        let menorRelacao = Infinity;
+        let estadoMaior = '';
+        let estadoMenor = '';
+
+        data.data.forEach(estado => {
+          totalCasos += estado.cases;
+          totalSuspeitos += estado.suspects;
+          totalMortes += estado.deaths;
+        });
+
+        const mediaCasos = (totalCasos / estados).toFixed(2);
+        const mediaSuspeitos = (totalSuspeitos / estados).toFixed(2);
+        const mediaMortes = (totalMortes / estados).toFixed(2);
+
+        data.data.forEach(estado => {
+          const acimaDaMedia = estado.deaths > mediaMortes;
+          const classe = acimaDaMedia ? 'acima-da-media' : '';
+
+          // Cálculo da relação casos/falecimentos, evitando divisão por 0
+          if (estado.deaths > 0) {
+            const relacao = estado.cases / estado.deaths;
+
+            if (relacao > maiorRelacao) {
+              maiorRelacao = relacao;
+              estadoMaior = `${estado.state} (${estado.uf})`;
+            }
+
+            if (relacao < menorRelacao) {
+              menorRelacao = relacao;
+              estadoMenor = `${estado.state} (${estado.uf})`;
+            }
+          }
+
+          const row = `
+            <tr class="${classe}">
+              <td>${estado.state}</td>
+              <td>${estado.uf}</td>
+              <td>${estado.cases}</td>
+              <td>${estado.suspects}</td>
+              <td>${estado.deaths}</td>
+            </tr>
+          `;
+          tbody.innerHTML += row;
+        });
+
+        tfoot.innerHTML = `
+          <tr>
+            <td colspan="2">Médias</td>
+            <td>${mediaCasos}</td>
+            <td>${mediaSuspeitos}</td>
+            <td>${mediaMortes}</td>
+          </tr>
+        `;
+
+        relacoesDiv.innerHTML = `
+          <p><strong>Maior relação Casos/Falecimentos:</strong> ${estadoMaior} (${maiorRelacao.toFixed(2)})</p>
+          <p><strong>Menor relação Casos/Falecimentos:</strong> ${estadoMenor} (${menorRelacao.toFixed(2)})</p>
+        `;
+      })
+      .catch(error => {
+        document.getElementById('covidTableBody').innerHTML = `
+          <tr><td colspan="5">Erro ao carregar dados: ${error}</td></tr>
+        `;
+      });
+  </script>
+</body>
+</html>

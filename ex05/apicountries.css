@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #999;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #eee;
+}
+.brasil {
+    background-color: #d1ffd1; /* verde claro */
+    font-weight: bold;
+}

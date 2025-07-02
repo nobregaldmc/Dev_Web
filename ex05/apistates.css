@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    border: 1px solid #999;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #eee;
+}
+tfoot td {
+    font-weight: bold;
+    background-color: #f9f9f9;
+}
+.acima-da-media {
+    background-color: #ffe5e5;
+}
+.resultado {
+    margin-top: 20px;
+    font-size: 18px;
+}
+.resultado strong {
+    color: #007700;
+}
